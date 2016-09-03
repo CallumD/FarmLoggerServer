@@ -1,0 +1,1 @@
+create table events (id int NOT NULL AUTO_INCREMENT primary key, name varchar(255), event_date datetime, details text, reminder datetime, created_at timestamp, animals varchar(255));

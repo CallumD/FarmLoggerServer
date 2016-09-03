@@ -19,13 +19,28 @@ end
 
 post '/events.json' do
   content_type :json
-  statement = @@client.prepare("insert into events(name) values (?)")
-  result1 = statement.execute(params[:name])
+  statement = @@client.prepare(<<-SQL)
+    INSERT INTO events(name, event_date, details, reminder, animals)
+    VALUES (?, ?, ?, ?, ?)
+  SQL
+  statement.execute(
+    params[:name],
+    Time.parse(params["event_date"]),
+    params[:details],
+    Time.parse(params[:reminder]),
+    params[:animals]
+  )
+
+  res = @@client.query(<<-SQL).first
+    SELECT * FROM events WHERE name = '#{params[:name]}'
+    ORDER BY CREATED_AT DESC
+    LIMIT 1
+  SQL
   res.to_json
 end
 
 get '/events/:id.json' do
   content_type :json
-  res = @@client.query("SELECT * FROM events where id = #{params[:id]}").first
+  res = @@client.query("SELECT * FROM events WHERE id = #{params[:id]}").first
   res.to_json
 end

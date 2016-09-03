@@ -29,6 +29,3 @@ DEPENDENCIES
   pry
   rake
   sinatra
-
-BUNDLED WITH
-   1.12.5
