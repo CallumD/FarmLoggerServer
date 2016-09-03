@@ -1,0 +1,6 @@
+task :default => :console
+desc "console"
+task :console do
+  require 'pry'
+  binding.pry # rubocop:disable Lint/Debugger
+end
